@@ -287,7 +287,7 @@ def runPage():
 if(path.exists("creds.txt")):
     runPage()
 else:
-    phoneSetUpPage()
+    upapPage()
     
 
 mainloop()
