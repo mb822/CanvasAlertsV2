@@ -120,8 +120,7 @@ def setDriver():
 
     
 
-def authenticate(user, password):
-
+def authenticate(user, password,driver):
     driver.get("http://njit.instructure.com/login/saml")
 
     username = driver.find_element_by_name("j_username")
@@ -160,7 +159,7 @@ def email_alert(subject, body):
         msg.set_content(body)
         msg['subject'] = subject
         msg['to'] = smsGateway
-        msg['from'] = email
+        msg['from'] = "canvasalertsnjit@gmail.com"
         # user must be the gmail of the sender
         # password must be the google APP password - made avalible after 2 factor verification is set up
         #"http://myaccount.google.com/" - navigate to security - signing in to google - app passwords - select app as other - name it anything - save the password that is given
@@ -171,8 +170,7 @@ def email_alert(subject, body):
 
         print(user)
         print(appPassword)
-        
-        server.login(user, password)
+        server.login("canvasalertsnjit@gmail.com", "eeytczejwrwbmruh")
         server.send_message(msg)
         server.quit()
         return True

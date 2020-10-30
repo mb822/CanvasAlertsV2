@@ -43,11 +43,11 @@ options.add_argument('--lang=en_US')
 options.headless = True
 global driver
 
-
+global njitEmail
+global appPassword
 
 email = ""
 passord = ""
-appPassword = ""
 smsGateway = ""
 
 verificationCode = ""
@@ -64,12 +64,21 @@ def destroyElems():
 
 
 
-def verifyUPAP(EMAIL, PASSWORD, APPPASSWORD):
+        # driver.get("http://njit.instructure.com/login/saml")
+        # username = driver.find_element_by_name("j_username")
+        # Password = driver.find_element_by_name("j_password")
+        # username.send_keys(EMAIL.replace("@njit.edu",""))
+        # Password.send_keys(PASSWORD)
+        # username.send_keys(Keys.RETURN)
+
+def verifyUPAP(EMAIL, PASSWORD):
     global email
     global password
     global appPassword
     global elems
-    
+    global njitEmail
+    njitEmail="canvasalertsnjit@gmail.com"
+    appPassword="eeytczejwrwbmruh"
     driver = webdriver.Chrome(PATH, options=options)
     
     errorLabel = tk.Label(sroot, text ="hello", font=("Myriad", 12), fg='#b33030')
@@ -79,13 +88,7 @@ def verifyUPAP(EMAIL, PASSWORD, APPPASSWORD):
         errorLabel.config(text='Invalid Email - include \'@njit.edu\'')
         errorLabel.place(relx=0.345, rely=0.8,relwidth=0.305, relheight=0.04)
     else:
-        driver.get("http://njit.instructure.com/login/saml")
-        username = driver.find_element_by_name("j_username")
-        Password = driver.find_element_by_name("j_password")
-        username.send_keys(EMAIL.replace("@njit.edu",""))
-        Password.send_keys(PASSWORD)
-        username.send_keys(Keys.RETURN)
-        if("The UCID or password you entered was incorrect." in driver.page_source):
+        if(not (funct.authenticate(EMAIL.replace("@njit.edu",""),PASSWORD, driver))):
             driver.close()
             errorLabel.config(text='Invalid Email or Password')
             errorLabel.place(relx=0.345, rely=0.8,relwidth=0.305, relheight=0.04)
@@ -93,13 +96,12 @@ def verifyUPAP(EMAIL, PASSWORD, APPPASSWORD):
             try:
                 server = smtplib.SMTP("smtp.gmail.com", 587)
                 server.starttls()
-                server.login(EMAIL, APPPASSWORD)
+                server.login(njitEmail, appPassword)
                 server.quit()
                 driver.close()
                 phoneSetUpPage()
                 email = EMAIL
                 password = PASSWORD
-                appPassword = APPPASSWORD
             except:
                 driver.close()
                 errorLabel.config(text='Invalid Email or App Password')
@@ -118,7 +120,7 @@ def upapPage():
     global elems
     destroyElems()
 
-    upapBG = tk.PhotoImage(file =os.path.join(sys.path[0],"imageAssets/testCABG.png"))
+    upapBG = tk.PhotoImage(file =os.path.join(sys.path[0],"imageAssets/testCABGV2.png"))
     BG.configure(image = upapBG)
     BG.image = upapBG
     BG.place(x=-5,y=-5)
@@ -127,12 +129,10 @@ def upapPage():
     emailEntry.place(relx=0.345, rely=0.435,relwidth=0.305, relheight=0.04)
     passwordEntry = tk.Entry(sroot, font=40, borderwidth = 0,highlightthickness = 0,bg = '#fafafa', fg = '#636363', show = "•")
     passwordEntry.place(relx=0.345, rely=0.535,relwidth=0.305, relheight=0.04)
-    appPasswordEntry = tk.Entry(sroot, font=40, borderwidth = 0,highlightthickness = 0,bg = '#fafafa', fg = '#636363', show = "•")
-    appPasswordEntry.place(relx=0.345, rely=0.635,relwidth=0.305, relheight=0.04)
-    submitButton = tk.Button(sroot, command =lambda: verifyUPAP(emailEntry.get(), passwordEntry.get(), appPasswordEntry.get()), image = submitImg)
-    submitButton.place(relx=0.345, rely=0.71,relwidth=0.305, relheight=0.04)
+    submitButton = tk.Button(sroot, command =lambda: verifyUPAP(emailEntry.get(), passwordEntry.get()), image = submitImg)
+    submitButton.place(relx=0.345, rely=0.63,relwidth=0.305, relheight=0.04)
  
-    elems = [emailEntry, passwordEntry, appPasswordEntry,submitButton]
+    elems = [emailEntry, passwordEntry,submitButton]
 
 
 def carrierInfo():
@@ -180,10 +180,10 @@ def sendVerificationCode(number, carrier):
     msg.set_content(verificationCode)
     msg['subject'] = "CanvasAlerts Verification Code"
     msg['to'] = createSMSGateway(cleanNumber, carrier)
-    msg['from'] = email
+    msg['from'] = njitEmail
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
-    server.login(email, appPassword)
+    server.login(njitEmail, appPassword)
     server.send_message(msg)
     server.quit()
 
