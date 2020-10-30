@@ -86,12 +86,12 @@ def verifyUPAP(EMAIL, PASSWORD):
     
     if "@njit.edu" not in EMAIL:
         errorLabel.config(text='Invalid Email - include \'@njit.edu\'')
-        errorLabel.place(relx=0.345, rely=0.8,relwidth=0.305, relheight=0.04)
+        errorLabel.place(relx=0.345, rely=0.73,relwidth=0.305, relheight=0.04)
     else:
         if(not (funct.authenticate(EMAIL.replace("@njit.edu",""),PASSWORD, driver))):
             driver.close()
             errorLabel.config(text='Invalid Email or Password')
-            errorLabel.place(relx=0.345, rely=0.8,relwidth=0.305, relheight=0.04)
+            errorLabel.place(relx=0.345, rely=0.73,relwidth=0.305, relheight=0.04)
         else:
             try:
                 server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -246,6 +246,7 @@ def phoneSetUpPage():
 
 
 def runScript():
+    global elems
     print("SCRIPT IS RUNNING")
     funct.setDriver()
     funct.setCreds()
@@ -254,10 +255,11 @@ def runScript():
     #destroyElems()
     doneLabel = tk.Label(sroot, text ="Canvas Alerts has finished running.", font=("Myriad", 12), fg='#3e95ef')
     doneLabel.place(relx=0.345, rely=0.6,relwidth=0.305, relheight=0.04)
-
+    elems.append(doneLabel)
 
 def confirmLogout():
     if messagebox.askyesno("Confirm Logout", "Are you sure you want to logout?") == True:
+        os.remove("creds.txt")
         upapPage()
     
 
