@@ -251,7 +251,7 @@ def runScript():
     funct.setCreds()
     listA = funct.assignmentList(funct.assignmentLinks())
     funct.sendAlertIfDue(listA)
-    destroyElems()
+    #destroyElems()
     doneLabel = tk.Label(sroot, text ="Canvas Alerts has finished running.", font=("Myriad", 12), fg='#3e95ef')
     doneLabel.place(relx=0.345, rely=0.6,relwidth=0.305, relheight=0.04)
 
