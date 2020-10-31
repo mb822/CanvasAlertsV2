@@ -51,6 +51,14 @@ options.headless = True
 options.detach = True
 
 global driver
+global timeDelta
+
+
+
+def setDelta(delta):
+    global timeDelta
+    timeDelta = int(delta)
+
 
 def setDriver():
     global driver
@@ -210,8 +218,8 @@ def assignmentLinks():
 
 
 
-    print("COURSELIST")
-    print(coursesList)
+   ### print("COURSELIST")
+   ### print(coursesList)
 
 
     
@@ -225,13 +233,13 @@ def assignmentLinks():
             #time.sleep(5)
             assignmentTab = driver.find_element_by_class_name("assignments")
             assignmentTab.click()
-            print(course + "goes through")
+            ###print(course + "goes through")
 
         except(NoSuchElementException, StaleElementReferenceException) as e:
             continue
         try:
             element = WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.ID, "assignment_group_upcoming_assignments")))
-            print("why is this working now: " + course)
+            ###print("why is this working now: " + course)
         except(TimeoutException)as e:
             continue
 
@@ -241,10 +249,10 @@ def assignmentLinks():
         assignmentPageSoup = BeautifulSoup(driver.page_source, 'html.parser')
         upA = BeautifulSoup(str(assignmentPageSoup.find("div", {"id": "assignment_group_upcoming_assignments"})), 'html.parser')
 
-        print("\n")
-        print(course)
-        print(upA)
-        print("\n")
+        ###print("\n")
+        ###print(course)
+        ####print(upA)
+        ###print("\n")
         
         upAList = upA.find_all("div", {"id": re.compile('^assignment_\d+')})#assignment_97613 #assignment_[0-9]{3,5}
 
@@ -341,7 +349,7 @@ def sendAlertIfDue(assignmentList):
         print(assignment)
 
     for assignment in assignmentList:
-        if((assignment.delta) <= timedelta(days=7)):
+        if((assignment.delta) <= timedelta(days=timeDelta)):
             time.sleep(1)
 
 

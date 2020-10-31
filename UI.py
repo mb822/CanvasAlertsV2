@@ -245,8 +245,17 @@ def phoneSetUpPage():
  #   runScript()
 
 
-def runScript():
+def runScript(delta):
     global elems
+
+
+    file = open("delta.txt", 'w')
+    delta = file.write(str(delta))
+    file.close()
+
+
+    funct.setDelta(delta)
+    
     print("SCRIPT IS RUNNING")
     funct.setDriver()
     funct.setCreds()
@@ -266,6 +275,13 @@ def confirmLogout():
 def runPage():
     global BG
     global elems
+    delta = 7
+
+    if(path.exists("delta.txt")):
+        file = open("delta.txt", 'r')
+        delta = file.read()
+        file.close()
+    
     
     destroyElems()
         
@@ -273,7 +289,12 @@ def runPage():
     BG.configure(image = runBG)
     BG.image = runBG
     BG.place(x=-5,y=-5)
-    runButton = tk.Button(sroot, command =lambda: runScript(), image = runImg)
+
+    daysBefore = tk.Entry(sroot, font='Helvetica 14 bold', borderwidth = 0,highlightthickness = 0,bg = '#ffffff', fg = '#a94848') #636363
+    daysBefore.insert(0, str(delta))
+    daysBefore.place(relx=0.44, rely=0.735,relwidth=0.025, relheight=0.06)
+    
+    runButton = tk.Button(sroot, command =lambda: runScript(daysBefore.get()), image = runImg)
     runButton.place(relx=0.345, rely=0.535,relwidth=0.305, relheight=0.04)
 
     logoutButton = tk.Button(sroot, command =lambda: confirmLogout(), image = logoutImg)
@@ -281,6 +302,7 @@ def runPage():
 
     elems.append(runButton)
     elems.append(logoutButton)
+    elems.append(daysBefore)
 
     
 
