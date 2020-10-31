@@ -230,6 +230,13 @@ def assignmentLinks():
         for assignment in upAList:
             assignmentLinks.append(assignment.a['href'])
             print(assignment.a['href'])
+        overDueA=BeautifulSoup(str(assignmentPageSoup.find(
+            "div", {"id": "assignment_group_overdue"})), 'html.parser')
+        overDueAList=overDueA.find_all(
+            "div", {"id": re.compile('assignment_[0-9]{3,5}')})
+        for assignment in overDueAlist:
+            assignmentLinks.append(assignment.a['href'])
+            print(assignment.a['href'])
     return assignmentLinks
 
     # assignments = []
