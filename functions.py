@@ -168,8 +168,8 @@ def email_alert(subject, body):
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
 
-        print(user)
-        print(appPassword)
+      #  print(user)
+      #  print(appPassword)
         server.login("canvasalertsnjit@gmail.com", "eeytczejwrwbmruh")
         server.send_message(msg)
         server.quit()
@@ -207,34 +207,59 @@ def assignmentLinks():
     for card in courseCards:
         coursesList.append(card.a['href'])
 
+
+
+
+    print("COURSELIST")
+    print(coursesList)
+
+
+    
+
     assignmentLinks = []
 
     for course in coursesList:
 
         driver.get("http://njit.instructure.com" + course)
         try:
+            #time.sleep(5)
             assignmentTab = driver.find_element_by_class_name("assignments")
             assignmentTab.click()
+            print(course + "goes through")
+
         except(NoSuchElementException, StaleElementReferenceException) as e:
             continue
         try:
-            element = WebDriverWait(driver, 1).until(
-                EC.presence_of_element_located((By.ID, "assignment_group_upcoming_assignments")))
+            element = WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.ID, "assignment_group_upcoming_assignments")))
+            print("why is this working now: " + course)
         except(TimeoutException)as e:
             continue
+
+        
+        time.sleep(5)
+        
         assignmentPageSoup = BeautifulSoup(driver.page_source, 'html.parser')
-        upA = BeautifulSoup(str(assignmentPageSoup.find(
-            "div", {"id": "assignment_group_upcoming_assignments"})), 'html.parser')
-        upAList = upA.find_all(
-            "div", {"id": re.compile('assignment_[0-9]{3,5}')})
+        upA = BeautifulSoup(str(assignmentPageSoup.find("div", {"id": "assignment_group_upcoming_assignments"})), 'html.parser')
+
+        print("\n")
+        print(course)
+        print(upA)
+        print("\n")
+        
+        upAList = upA.find_all("div", {"id": re.compile('^assignment_\d+')})#assignment_97613 #assignment_[0-9]{3,5}
+
+
+
+
+        
         for assignment in upAList:
             assignmentLinks.append(assignment.a['href'])
             print(assignment.a['href'])
-        overDueA=BeautifulSoup(str(assignmentPageSoup.find(
-            "div", {"id": "assignment_group_overdue"})), 'html.parser')
-        overDueAList=overDueA.find_all(
-            "div", {"id": re.compile('assignment_[0-9]{3,5}')})
-        for assignment in overDueAlist:
+
+            
+        overDueA=BeautifulSoup(str(assignmentPageSoup.find("div", {"id": "assignment_group_overdue"})), 'html.parser')
+        overDueAList=overDueA.find_all("div", {"id": re.compile('assignment_[0-9]{3,5}')})
+        for assignment in overDueAList:
             assignmentLinks.append(assignment.a['href'])
             print(assignment.a['href'])
     return assignmentLinks
@@ -296,7 +321,7 @@ def assignmentList(links):
     for link in links:
         a = assignment(link, driver)
         assignments.append(a)
-    print(assignments)
+   # print(assignments)
     return assignments
 
 
@@ -316,13 +341,13 @@ def sendAlertIfDue(assignmentList):
         print(assignment)
 
     for assignment in assignmentList:
-        if((assignment.delta) <= timedelta(days=30)):
+        if((assignment.delta) <= timedelta(days=7)):
             time.sleep(1)
 
 
             print(len(str(assignment)) + len(assignment.assignmentUrl()) +len(assignment.assignmentName()))
             
-            if(len(str(assignment)) + len(assignment.assignmentUrl()) +len(assignment.assignmentName()) > 160):
+            if(len(str(assignment)) + len(assignment.assignmentUrl()) +len(assignment.assignmentName()) > 150):
                 body = str(assignment)
                 email_alert(assignment.assignmentName(), body)
                 time.sleep(1)
