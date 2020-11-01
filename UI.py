@@ -26,6 +26,7 @@ sroot.configure()
 Frame(sroot)
 BG = Label(sroot)
 BG.place(x=-5,y=-5)
+import sys, os
 
 sVerifImg = tk.PhotoImage(file = os.path.join(sys.path[0],"imageAssets/sendVerification.png"))
 runImg = tk.PhotoImage(file = os.path.join(sys.path[0],"imageAssets/run.png"))
@@ -250,7 +251,7 @@ def runScript(delta):
 
 
     file = open("delta.txt", 'w')
-    delta = file.write(str(delta))
+    gefile.write(str(delta))
     file.close()
 
 
