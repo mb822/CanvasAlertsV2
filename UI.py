@@ -251,7 +251,7 @@ def runScript(delta):
 
 
     file = open("delta.txt", 'w')
-    gefile.write(str(delta))
+    file.write(str(delta))
     file.close()
 
 
