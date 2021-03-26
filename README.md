@@ -12,5 +12,5 @@ Python3 Mac How To:
  - 4.) Navigate to extracted folder ("CanvasAlertsV2-master") in Terminal
  - 5.) run the following command: ```python3 UI.py```
   
-***Note: Drivers may not be up to date. Drivers can be downloaded*** [here](https://chromedriver.chromium.org/downloads) 
+***Note: Drivers may not be up to date. Drivers can be downloaded*** [here](https://chromedriver.chromium.org/downloads)<br/>
 ***replace existing driver in drivers folder with a compatible version and you are all set***
