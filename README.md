@@ -3,7 +3,7 @@
 
 running UI.py will open a window where the user is prompted to input Canvas login and contact information<br/>
 after successful login and phone number verification, the user can click "Run" to run the web scraping and SMS components of Canvas Alerts<br/>
-when the program completes, the user will have received a list of SMS messages of assignments that are due<br/>
+when the program completes, the user will have received a list of SMS messages of assignments that are due soon<br/>
 
 Mac How To: 
  - 1.) Download Canvas Alerts ZIP
@@ -12,3 +12,4 @@ Mac How To:
  - 4.) Navigate to extracted folder ("CanvasAlertsV2-master") in Terminal
  - 5.) run the following command: ```python3 UI.py```
   
+***Note: Drivers may not be up to date. Drivers can be downloaded*** [here](https://chromedriver.chromium.org/downloads) 
