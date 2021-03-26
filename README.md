@@ -6,7 +6,7 @@ after successful login and phone number verification, the user can click "Run" t
 when the program completes, the user will have received a list of SMS messages of assignments that are due soon<br/>
 
 Python3 Mac How To: 
- - 1.) Download Canvas Alerts ZIP
+ - 1.) Download [Canvas Alerts ZIP](github.com/mb822/CanvasAlertsV2/archive/refs/heads/master.zip) 
  - 2.) Extract
  - 3.) Open Terminal
  - 4.) Navigate to extracted folder ("CanvasAlertsV2-master") in Terminal
