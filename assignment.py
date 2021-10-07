@@ -42,7 +42,7 @@ class assignment:
         self.driver = driver
         self.driver.get(self.link)
         self.pageSource = driver.find_element_by_xpath(
-            "/html/body/pre").text[9:]
+            "/html/body/pre").text
         self.pageJson = json.loads(str(self.pageSource))
         temp = self.pageJson['due_at']
         tempDate = datetime.strptime(temp, '%Y-%m-%dT%H:%M:%SZ')
